@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class OficinaEcologica extends AcaoSocioambiental {
 
+
     private int duracaoHoras;
     private boolean kitMaterial;
 
@@ -11,6 +12,22 @@ public class OficinaEcologica extends AcaoSocioambiental {
         super(id, titulo, descricao, data, maxParticipantes);
         this.kitMaterial = kitMaterial;
         this.duracaoHoras = duracaoHoras;
+    }
+
+    public int getDuracaoHoras() {
+        return duracaoHoras;
+    }
+
+    public void setDuracaoHoras(int duracaoHoras) {
+        this.duracaoHoras = duracaoHoras;
+    }
+
+    public boolean isKitMaterial() {
+        return kitMaterial;
+    }
+
+    public void setKitMaterial(boolean kitMaterial) {
+        this.kitMaterial = kitMaterial;
     }
 
     @Override

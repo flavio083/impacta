@@ -69,12 +69,12 @@ public class Impacta {
             return false;
         }
 
-        if (acao.getEmailsInscritos().size() >= acao.getMaxParticipantes()) {
-            throw new AcaoLotadaException("A ação já atingiu o limite máximo de participantes.");
-        }
-
         if (acao.getEmailsInscritos().contains(emailVoluntario)) {
             throw new InscricaoDuplicadaException("O voluntário já está inscrito nesta ação.");
+        }
+
+        if (acao.getEmailsInscritos().size() >= acao.getMaxParticipantes()) {
+            throw new AcaoLotadaException("A ação já atingiu o limite máximo de participantes.");
         }
 
         acao.getEmailsInscritos().add(emailVoluntario);
@@ -105,11 +105,28 @@ public class Impacta {
             return "Ação não encontrada.";
         }
 
-        return "Título: " + acao.getTitulo() +
+        String detalhes = "Título: " + acao.getTitulo() +
                 " | Descrição: " + acao.getDescricao() +
                 " | Data: " + acao.getData() +
                 " | Pontuação Calculada: " + acao.calcularPontuacao() +
-                " | Inscritos: " + acao.getEmailsInscritos().size() + "/" + acao.getMaxParticipantes();
+                " | Inscritos: " + acao.getEmailsInscritos().size() + "/" + acao.getMaxParticipantes() +
+                " | Voluntários: " + acao.getEmailsInscritos();
+
+        if (acao instanceof PlantioMudas) {
+            PlantioMudas plantio = (PlantioMudas) acao;
+            detalhes += " | Quantidade de mudas: " + plantio.getQuantidadeMudas();
+
+        } else if (acao instanceof MutiraoReciclagem) {
+            MutiraoReciclagem mutirao = (MutiraoReciclagem) acao;
+            detalhes += " | Duração em horas: " + mutirao.getDuracaoHoras();
+
+        } else if (acao instanceof OficinaEcologica) {
+            OficinaEcologica oficina = (OficinaEcologica) acao;
+            detalhes += " | Duração em horas: " + oficina.getDuracaoHoras() +
+                    " | Kit de material: " + oficina.isKitMaterial();
+        }
+
+        return detalhes;
     }
 
     public String[] listarVoluntarios() {
@@ -125,7 +142,7 @@ public class Impacta {
                     precisaTrocar = true;
                 }
                 else if (arrayVoluntarios[j].getPontuacaoAcumulada() == arrayVoluntarios[i].getPontuacaoAcumulada()) {
-// A =1, B= 2
+
                     if (arrayVoluntarios[j].getNome().compareToIgnoreCase(arrayVoluntarios[i].getNome()) < 0) {
                         precisaTrocar = true;
                     }
